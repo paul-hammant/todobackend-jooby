@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-public class TodoTest {
+public class TodoIntegrationTest {
 
   /**
    * One app/server for all the test of this class. If you want to start/stop a new server per test,

@@ -77,6 +77,7 @@ public class App extends Jooby {
           TodoStore store = require(TodoStore.class);
           return store.merge(req.param("id").intValue(), req.body(Todo.class));
         });
+    assets("/**");
   }
 
   public static void main(final String[] args) {

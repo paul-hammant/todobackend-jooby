@@ -24,40 +24,45 @@ public class Todo {
     return id;
   }
 
-  public void setId(final int id) {
+  public Todo setId(final int id) {
     this.id = id;
+    return this;
   }
 
   public String getTitle() {
     return title;
   }
 
-  public void setTitle(final String title) {
+  public Todo setTitle(final String title) {
     this.title = title;
+    return this;
   }
 
   public Boolean getCompleted() {
     return Optional.ofNullable(completed).orElse(Boolean.FALSE);
   }
 
-  public void setCompleted(final Boolean completed) {
+  public Todo setCompleted(final Boolean completed) {
     this.completed = completed;
+    return this;
   }
 
   public Integer getOrder() {
     return Optional.ofNullable(order).orElse(0);
   }
 
-  public void setOrder(final Integer order) {
+  public Todo setOrder(final Integer order) {
     this.order = order;
+    return this;
   }
 
   public String getUrl() {
     return url;
   }
 
-  public void setUrl(final String url) {
+  public Todo setUrl(final String url) {
     this.url = url;
+    return this;
   }
 
   @Override
