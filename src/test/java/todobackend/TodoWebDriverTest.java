@@ -14,6 +14,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.id;
 import static org.seleniumhq.selenium.fluent.Period.millis;
+import static org.seleniumhq.selenium.fluent.Period.secs;
 
 public class TodoWebDriverTest {
 
@@ -81,6 +82,13 @@ public class TodoWebDriverTest {
     washBathroomRow.button(className("destroy")).click();
     listInPageShouldBe("");
     assertThat(TEST_APP.getTodoStore().list().size(), equalTo(0));
+  }
+
+  @Test
+  @Ignore // Too flakey
+  public void runPetesTestSuite() throws InterruptedException {
+    DRIVER.get("http://todobackend.com/specs/index.html?http://localhost:8080/todos");
+    FWD.li(className("passes")).getText().within(secs(12)).shouldContain("passes: 16");
   }
 
   private static void listInPageShouldBe(String shouldBe) {
