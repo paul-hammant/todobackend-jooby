@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.jooby.Jooby;
+import org.jooby.Request;
 import org.jooby.Results;
 import org.jooby.Status;
 import org.jooby.json.Jackson;
 
 /**
- * Source code for http://www.todobackend.com.
+ * Source code for implementation of http://todobackend.com.
  */
 @SuppressWarnings({"unchecked", "rawtypes" })
 public class App extends Jooby {
@@ -43,41 +44,54 @@ public class App extends Jooby {
       return result;
     });
 
-    /** Todo API: */
+    /* Todo API: */
     use("/todos")
-        /** List all todos. */
-        .get(() -> {
-          TodoStore store = require(TodoStore.class);
-          return store.list();
-        })
-        /** Get todo by ID. */
-        .get("/:id", req -> {
-          TodoStore store = require(TodoStore.class);
-          return store.get(req.param("id").intValue());
-        })
-        /** Create a new todo. */
-        .post(req -> {
-          TodoStore store = require(TodoStore.class);
-          return Results.with(store.create(req.body(Todo.class)), Status.CREATED);
-        })
-        /** Delete todo by ID. */
-        .delete("/:id", req -> {
-          TodoStore store = require(TodoStore.class);
-          store.delete(req.param("id").intValue());
-          return Results.noContent();
-        })
-        /** Delete all todos. */
-        .delete(() -> {
-          TodoStore store = require(TodoStore.class);
-          store.deleteAll();
-          return Results.noContent();
-        })
-        /** Update an existing todo. */
-        .patch("/:id", req -> {
-          TodoStore store = require(TodoStore.class);
-          return store.merge(req.param("id").intValue(), req.body(Todo.class));
-        });
+        /* List all todos. */
+        .get(this::getAllTodos)
+        /* Get todo by ID. */
+        .get("/:id", this::getTodoById)
+        /* Create a new todo. */
+        .post(this::createNewTodo)
+        /* Delete todo by ID. */
+        .delete("/:id", this::deleteTodoById)
+        /* Delete all todos. */
+        .delete(this::deleteAllTodos)
+        /* Update an existing todo. */
+        .patch("/:id", this::patchTodo);
+
     assets("/**");
+  }
+
+  protected Object patchTodo(Request req) throws Exception {
+    TodoStore store = require(TodoStore.class);
+    return store.merge(req.param("id").intValue(), req.body(Todo.class));
+  }
+
+  protected Object deleteAllTodos() {
+    TodoStore store = require(TodoStore.class);
+    store.deleteAll();
+    return Results.noContent();
+  }
+
+  protected Object deleteTodoById(Request req) {
+    TodoStore store = require(TodoStore.class);
+    store.delete(req.param("id").intValue());
+    return Results.noContent();
+  }
+
+  protected Object createNewTodo(Request req) throws Exception {
+    TodoStore store = require(TodoStore.class);
+    return Results.with(store.create(req.body(Todo.class)), Status.CREATED);
+  }
+
+  protected Object getTodoById(Request req) {
+    TodoStore store = require(TodoStore.class);
+    return store.get(req.param("id").intValue());
+  }
+
+  protected Object getAllTodos() {
+    TodoStore store = require(TodoStore.class);
+    return store.list();
   }
 
   public static void main(final String[] args) {
