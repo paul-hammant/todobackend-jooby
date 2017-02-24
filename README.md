@@ -9,6 +9,7 @@ Note: Needs ChromeDriver and Maven (and Java8) installed.
 ```
 git clone git@github.com:paul-hammant/todobackend-jooby.git
 cd todobackend-jooby
+git checkout expectations
 mvn test
 ```
 
