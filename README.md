@@ -12,18 +12,9 @@ cd todobackend-jooby
 mvn test
 ```
 
-Watch WebDriver+Chrome do it's thing in about 16 seconds (not first time as 
+Watch WebDriver+Chrome do their thing in about 16 seconds (not first time as 
 Maven downloads lots of dependencies).
 
-Note: mvn test runs all tests.
-
-If you were doing this in a CI loop, you'd do this ...
-
-```
-mvn test -Punit-tests
-mvn test -Pintegration-tests
-mvn test -Pfunctional-tests
-```
-
-... to get a pipeline effect.
-
+Note: mvn test runs all tests, but it runs the unit test (and potentially stops there if there is a failure), before the
+integration tests (and potentially stops there if there is a failure), before the functional tests. It is crudely 
+matching on Unit, Integration and WebDriver in the class names, but it could be more sophisticated.

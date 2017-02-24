@@ -76,40 +76,61 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.18.1</version>
         <configuration>
-          <includes>
-            <include>${test-classes}</include>
-          </includes>
+          <excludes>
+            <exclude>**/*</exclude>
+          </excludes>
         </configuration>
+        <executions>
+          <!-- First execution is Unit tests, stop there if any failures -->
+          <execution>
+            <id>unit-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/*Integration*.java</exclude>
+                <exclude>**/*WebDriver*.java</exclude>
+              </excludes>
+              <includes>
+                <include>**/*Unit*.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!-- Second execution is Integration tests, stop there if any failures -->
+          <execution>
+            <id>integration-tests</id>
+              <goals>
+                <goal>test</goal>
+              </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/*Unit*.java</exclude>
+                <exclude>**/*WebDriver*.java</exclude>
+              </excludes>
+              <includes>
+                <include>**/*Integration*.java</include>
+              </includes>
+            </configuration>
+          </execution>
+          <!-- Third execution is Functional tests, stop there if any failures -->
+          <execution>
+            <id>functional-tests</id>
+            <goals>
+              <goal>test</goal>
+            </goals>
+            <configuration>
+              <excludes>
+                <exclude>**/*Unit*.java</exclude>
+                <exclude>**/*Integration*.java</exclude>
+              </excludes>
+              <includes>
+                <include>**/*WebDriver*.java</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <id>all-tests</id>
-      <properties>
-        <test-classes>**/*.java</test-classes>
-      </properties>
-    </profile>
-    <profile>
-      <id>unit-tests</id>
-      <properties>
-        <test-classes>**/*Unit*.java</test-classes>
-      </properties>
-    </profile>
-    <profile>
-      <id>functional-tests</id>
-      <properties>
-        <test-classes>**/*WebDriver*.java</test-classes>
-      </properties>
-    </profile>
-    <profile>
-      <id>integration-tests</id>
-      <properties>
-        <test-classes>**/*Integration*.java</test-classes>
-      </properties>
-    </profile>
-  </profiles>
 </project>
